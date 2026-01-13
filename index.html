@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>卷膜尺寸计算器</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: #f5f7fb;
+        color: #1f2937;
+      }
+
+      .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+      }
+
+      header {
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin: 0 0 8px;
+      }
+
+      p {
+        margin: 0;
+        color: #4b5563;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(260px, 320px) 1fr;
+        gap: 24px;
+      }
+
+      .panel {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        font-size: 15px;
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+
+      .field small {
+        display: block;
+        color: #6b7280;
+        margin-top: 6px;
+      }
+
+      .results {
+        display: grid;
+        gap: 12px;
+      }
+
+      .result-item {
+        background: #f8fafc;
+        border-radius: 10px;
+        padding: 12px;
+        border: 1px dashed #cbd5f5;
+      }
+
+      .result-item span {
+        display: block;
+        font-size: 14px;
+        color: #475569;
+      }
+
+      .result-item strong {
+        font-size: 20px;
+        color: #1d4ed8;
+      }
+
+      .note {
+        margin-top: 16px;
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .svg-wrap {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      }
+
+      svg {
+        width: 100%;
+        height: 360px;
+      }
+
+      @media (max-width: 880px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>卷膜尺寸计算器</h1>
+        <p>输入产品尺寸后自动计算卷膜宽度与切刀长度，并显示成型示意图。</p>
+      </header>
+
+      <div class="layout">
+        <div class="panel">
+          <div class="field">
+            <label for="length">长度 L（mm）</label>
+            <input id="length" type="number" min="0" step="0.1" value="120" />
+          </div>
+          <div class="field">
+            <label for="width">宽度 W（mm）</label>
+            <input id="width" type="number" min="0" step="0.1" value="80" />
+          </div>
+          <div class="field">
+            <label for="height">高度 H（mm）</label>
+            <input id="height" type="number" min="0" step="0.1" value="50" />
+          </div>
+          <hr />
+          <div class="field">
+            <label for="finSeal">搭接封边（mm）</label>
+            <input id="finSeal" type="number" min="0" step="0.1" value="15" />
+          </div>
+          <div class="field">
+            <label for="topSeal">上封口（mm）</label>
+            <input id="topSeal" type="number" min="0" step="0.1" value="20" />
+          </div>
+          <div class="field">
+            <label for="bottomSeal">下封口（mm）</label>
+            <input id="bottomSeal" type="number" min="0" step="0.1" value="20" />
+            <small>可按设备及材料情况调整。</small>
+          </div>
+
+          <div class="results">
+            <div class="result-item">
+              <span>卷膜宽度（Web Width）</span>
+              <strong id="webWidth">0.0 mm</strong>
+            </div>
+            <div class="result-item">
+              <span>切刀长度（Cut Length）</span>
+              <strong id="cutLength">0.0 mm</strong>
+            </div>
+          </div>
+
+          <div class="note">
+            计算规则：卷膜宽度 = 2 × (宽 + 高) + 搭接封边；切刀长度 = 长 + 上封口 + 下封口。
+          </div>
+        </div>
+
+        <div class="svg-wrap">
+          <svg viewBox="0 0 600 360" role="img" aria-label="卷膜成型示意图">
+            <defs>
+              <marker
+                id="arrow"
+                viewBox="0 0 10 10"
+                refX="5"
+                refY="5"
+                markerWidth="6"
+                markerHeight="6"
+                orient="auto-start-reverse"
+              >
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb" />
+              </marker>
+            </defs>
+            <rect x="140" y="70" width="320" height="110" rx="8" fill="#e0e7ff" stroke="#4338ca" />
+            <rect x="140" y="200" width="320" height="90" rx="8" fill="#f1f5f9" stroke="#94a3b8" />
+            <line x1="140" y1="55" x2="460" y2="55" stroke="#2563eb" marker-end="url(#arrow)" marker-start="url(#arrow)" />
+            <text x="300" y="40" text-anchor="middle" fill="#1e3a8a" font-size="16">长度 L</text>
+            <line x1="120" y1="200" x2="120" y2="290" stroke="#2563eb" marker-end="url(#arrow)" marker-start="url(#arrow)" />
+            <text x="95" y="250" text-anchor="middle" fill="#1e3a8a" font-size="16">宽 W</text>
+            <line x1="480" y1="200" x2="480" y2="290" stroke="#2563eb" marker-end="url(#arrow)" marker-start="url(#arrow)" />
+            <text x="505" y="250" text-anchor="middle" fill="#1e3a8a" font-size="16">高 H</text>
+            <text id="labelLength" x="300" y="125" text-anchor="middle" fill="#1e293b" font-size="18">L = 0.0 mm</text>
+            <text id="labelWidth" x="300" y="245" text-anchor="middle" fill="#1e293b" font-size="16">W = 0.0 mm</text>
+            <text id="labelHeight" x="300" y="270" text-anchor="middle" fill="#1e293b" font-size="16">H = 0.0 mm</text>
+            <text id="labelWeb" x="300" y="330" text-anchor="middle" fill="#1e3a8a" font-size="16">
+              卷膜宽度 = 0.0 mm
+            </text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const inputs = {
+        length: document.getElementById("length"),
+        width: document.getElementById("width"),
+        height: document.getElementById("height"),
+        finSeal: document.getElementById("finSeal"),
+        topSeal: document.getElementById("topSeal"),
+        bottomSeal: document.getElementById("bottomSeal"),
+      };
+
+      const outputs = {
+        webWidth: document.getElementById("webWidth"),
+        cutLength: document.getElementById("cutLength"),
+        labelLength: document.getElementById("labelLength"),
+        labelWidth: document.getElementById("labelWidth"),
+        labelHeight: document.getElementById("labelHeight"),
+        labelWeb: document.getElementById("labelWeb"),
+      };
+
+      const toNumber = (value) => Math.max(Number.parseFloat(value || "0"), 0);
+      const format = (value) => value.toFixed(1);
+
+      const update = () => {
+        const length = toNumber(inputs.length.value);
+        const width = toNumber(inputs.width.value);
+        const height = toNumber(inputs.height.value);
+        const finSeal = toNumber(inputs.finSeal.value);
+        const topSeal = toNumber(inputs.topSeal.value);
+        const bottomSeal = toNumber(inputs.bottomSeal.value);
+
+        const webWidth = 2 * (width + height) + finSeal;
+        const cutLength = length + topSeal + bottomSeal;
+
+        outputs.webWidth.textContent = `${format(webWidth)} mm`;
+        outputs.cutLength.textContent = `${format(cutLength)} mm`;
+        outputs.labelLength.textContent = `L = ${format(length)} mm`;
+        outputs.labelWidth.textContent = `W = ${format(width)} mm`;
+        outputs.labelHeight.textContent = `H = ${format(height)} mm`;
+        outputs.labelWeb.textContent = `卷膜宽度 = ${format(webWidth)} mm`;
+      };
+
+      Object.values(inputs).forEach((input) => {
+        input.addEventListener("input", update);
+      });
+
+      update();
+    </script>
+  </body>
+</html>
